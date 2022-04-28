@@ -1,6 +1,5 @@
     <?php include 'template/header.php';?>
 
-   <?php include 'includes/functions.php'; ?>
 
     <div class="container">
         <div class="row">
