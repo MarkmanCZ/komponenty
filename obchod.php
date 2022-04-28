@@ -28,13 +28,17 @@
             <div class="col-md-9 bg-light">
                 <ul class="d-flex flex-wrap justify-content-center list-unstyled">
                 <?php
+
+                   $page_number = (!empty($_GET['page'])) ? $_GET['page'] : false;
+
                     $stmt = $db->getConn()->prepare("SELECT * FROM mt_komponent as komp INNER JOIN mt_typkomponent AS typ ON typ.idKomponent = komp.typKomponent_id INNER JOIN mt_vyrobce AS vyrb 
                     ON vyrb.idVyrobce = komp.vyrobce_id  
-                    WHERE typ.url = ? ");
+                    WHERE typ.url = ?;");
                     $stmt->bind_param("s", $_GET['komp']);
                     $stmt->execute();
 
                     $result = $stmt->get_result();
+
 
                     while($row2 = $result->fetch_assoc()) {
                 ?>
@@ -48,10 +52,11 @@
                             </div>
                         </div>
                     </li>
+                    <?php
 
-                <?php
-                    }
-                ?>
+                        }
+
+                    ?>
                 </ul>
             </div>
         </div>
