@@ -1,3 +1,5 @@
+
+
     <div class="container fixed-bottom p-0">
         <footer class="bg-light p-2 rounded-top">
             <div class="row">
@@ -10,6 +12,7 @@
             </div>
         </footer>
     </div>
+
 
     <!-- JS LINKS -->
     <script src="assets/js/bootstrap.bundle.min.js"></script>

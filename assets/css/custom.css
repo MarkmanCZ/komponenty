@@ -13,6 +13,7 @@ h2 {
     padding: 0;
 }
 
+
 .default {
     color: inherit;
     text-decoration: none;
@@ -20,6 +21,12 @@ h2 {
 
 .default:hover {
     color: blue;
+}
+
+ul {
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 /* Navbar */

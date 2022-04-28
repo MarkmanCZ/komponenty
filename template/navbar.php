@@ -10,10 +10,10 @@
                     <a href="index.php" class="nav-link">domů</a>
                 </li>
                 <li class="nav-item">
-                    <a href="shop.php" class="nav-link">obchod</a>
+                    <a href="obchod.php" class="nav-link">obchod</a>
                 </li>
                 <li class="nav-item">
-                    <a href="about.php" class="nav-link">o webu</a>
+                    <a href="owebu.php" class="nav-link">o webu</a>
                 </li>
             </ul>
         </div>

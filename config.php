@@ -22,5 +22,5 @@ function getTitle() {
 }
 
 function linkComponent($type) {
-    return "shop.php?komp=" . $type;
+    return "obchod.php?komp=" . $type;
 }
