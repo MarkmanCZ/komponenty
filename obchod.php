@@ -2,7 +2,8 @@
 
     include 'template/header.php';
 
-    include_once 'classes/class.database.php';
+    include 'classes/class.database.php';
+    include 'functions.php';
 
     $db = new Database();
     $result = $db->getConn()->query("SELECT * FROM mt_typkomponent");
@@ -25,7 +26,7 @@
                 </div>
             </div>
             <div class="col-md-9 bg-light">
-                <ul>
+                <ul class="d-flex flex-wrap justify-content-center list-unstyled">
                 <?php
                     $stmt = $db->getConn()->prepare("SELECT * FROM mt_komponent as komp INNER JOIN mt_typkomponent AS typ ON typ.idKomponent = komp.typKomponent_id INNER JOIN mt_vyrobce AS vyrb 
                     ON vyrb.idVyrobce = komp.vyrobce_id  
@@ -37,9 +38,9 @@
 
                     while($row2 = $result->fetch_assoc()) {
                 ?>
-                    <li>
-                        <div class="card m-1" style="width: 18rem;">
-                            <img src="https://www.w3schools.com/howto/img_avatar.png" class="card-img-top" alt="...">
+                    <li class="m-1">
+                        <div class="card card-shop h-100">
+                            <img src="<?= getPicture($row2['pic']) ?>" class="card-img-top p-2 w-100" >
                             <div class="card-body">
                                 <h5 class="card-title"><?= $row2['nazev'];?></h5>
                                 <p><?= $row2['vyrobce'];?></p>

@@ -1,6 +1,6 @@
 
 
-    <div class="container fixed-bottom p-0">
+    <div class="container p-0 mt-1">
         <footer class="bg-light p-2 rounded-top">
             <div class="row">
                 <div class="col-12 col-md-6 text-center text-md-start">
