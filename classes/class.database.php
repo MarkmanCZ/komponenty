@@ -2,13 +2,10 @@
 
 class Database
 {
-
-
-
     protected $conn;
 
     public function __construct() {
-        $this->conn = new mysqli(Config::$host, Config::$user, Config::$pwd, Config::$db;
+        $this->conn = new mysqli(Config::$host, Config::$user, Config::$pwd, Config::$db);
         if(!$this->conn) {
             die("Error: " . mysqli_connect_error());
         }
