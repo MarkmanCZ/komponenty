@@ -23,6 +23,7 @@ h2 {
     color: blue;
 }
 
+
 /* Navbar */
 .nav-link {
     font-weight: bold;
@@ -32,6 +33,8 @@ h2 {
 .card-shop {
     max-width: 300px;
 }
+
+
 
 @media screen and (min-width: 1024px) {
 

@@ -1,5 +1,5 @@
 <div class="container p-0">
-    <nav class="navbar navbar-expand-md navbar-light bg-light p-3 rounded-top mt-1 mt-md-3 border-bottom border-4">
+    <nav class="navbar navbar-expand-md navbar-light bg-light p-3 rounded-top mt-1 mt-md-3 border-bottom border-5 mb-4">
         <a href="index.php" class="navbar-brand fw-bold">MV Shop</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBox" aria-controls="navBox" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
