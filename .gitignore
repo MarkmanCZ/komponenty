@@ -137,4 +137,4 @@ fabric.properties
 *.code-workspace
 
 # End of https://www.toptal.com/developers/gitignore/api/phpstorm,visualstudiocode
-/classes/class.database.php
+/classes/class.config.php
