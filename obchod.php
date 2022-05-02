@@ -20,7 +20,7 @@
                         <?php
                             while($row = $result->fetch_assoc()) {
                         ?>
-                        <a href="<?= linkComponent($row['url']) ?>" class="list-group-item list-group-item-action"><?= $row["typKomponent"]; ?></a>
+                        <a href="<?= linkComponent($row['url']) ?>" class="list-group-item list-group-item-action <?= ($_GET['komp'] == $row['url']) ? active : false ?>"><?= $row["typKomponent"]; ?></a>
                         <?php
                             }
                         ?>
@@ -34,19 +34,47 @@
                     }
 
                     ?></h2>
+
+                <?php
+
+                ?>
+
+                <form action="" method="POST">
+                    <label for="brands">Vyber vyrobce</label>
+                    <select name="brands" id="brands">
+                        <?php
+
+                        ?>
+                            <option value=""></option>
+                        <?php
+                           
+                        ?>
+                    </select>
+                </form>
+
+
                 <ul class="d-flex flex-wrap justify-content-center list-unstyled mt-3">
                 <?php
                     if(!empty($_GET['komp'])):
-
                         $result2 = $db->getComponentsUrl((!empty($_GET['komp'])) ? $_GET['komp'] : false);
 
+                        $per_page = 6;
+                        $curr_page = (!empty($_GET['page'])) ? $_GET['page'] : 1;
 
-                        while($row2 = $result2->fetch_assoc()) {
+                        $num_of_pages = ceil($result2->num_rows / $per_page);
+
+                        $offset = ($curr_page - 1) * $per_page;
+
+                        $products = $db->getComponentsUrlLimit((!empty($_GET['komp'])) ? $_GET['komp'] : false, $per_page, $offset);
+
+                        while($row2 = $products->fetch_assoc()) {
                 ?>
                     <li class="m-1">
                         <div class="card card-shop h-100">
-                            <img src="<?= getPicture($row2['pic']) ?>" class="card-img-top p-2 w-100" >
-                            <div class="card-body">
+                            <div class="card-img-top">
+                                <img src="<?= getPicture($row2['pic']) ?>" class="img-fluid p-2">
+                            </div>
+                            <div class="p-2 align-items-end mt-auto">
                                 <h5 class="card-title"><?= $row2['nazev'];?></h5>
                                 <p><?= $row2['vyrobce'];?></p>
                                 <a href="komponent.php?id=<?= $row2['id']; ?>" class="btn btn-primary">Detail</a>
@@ -54,12 +82,22 @@
                         </div>
                     </li>
                     <?php
-
                         }
-                        endif;
 
+
+                        endif;
                     ?>
                 </ul>
+                <div class="text-center p-2">
+                    <?php
+
+                    if(!empty($num_of_pages)):
+                        for($page=1;$page <= $num_of_pages; $page++) {
+                            echo '<a href="obchod.php?komp=' . $_GET['komp'] .'&page='.$page.'" class="btn btn-primary m-1">' . $page .'</a>';
+                        }
+                    endif;
+                    ?>
+                </div>
             </div>
         </div>
     </div>

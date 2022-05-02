@@ -31,10 +31,16 @@ h2 {
 
 /* Shop */
 .card-shop {
-    max-width: 300px;
+    width: 300px;
 }
 
+.card-img-top {
+    text-align: center;
+}
 
+.card-img-top img {
+    height: 200px;
+}
 
 @media screen and (min-width: 1024px) {
 

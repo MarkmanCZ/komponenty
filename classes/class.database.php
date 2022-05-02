@@ -1,5 +1,8 @@
 <?php
 
+require_once 'class.config.php';
+
+
 class Database
 {
     protected $conn;
@@ -22,11 +25,12 @@ class Database
         }catch (SQLiteException $ex) {
             $ex->getMessage();
         }
+        return null;
     }
 
     public function getComponentType($url) {
         if($url == false)
-            return;
+            return null;
         $stmt = $this->conn->prepare("SELECT * FROM mt_typkomponent WHERE url = ?");
         $stmt->bind_param("s", $url);
         $stmt->execute();
@@ -61,10 +65,23 @@ class Database
     }
 
     public function getComponentsUrl($url) {
-
         $stmt = $this->conn->prepare("SELECT * FROM mt_komponent as komp INNER JOIN mt_typkomponent AS typ ON typ.idKomponent = komp.typKomponent_id INNER JOIN mt_vyrobce AS vyrb 
                     ON vyrb.idVyrobce = komp.vyrobce_id  
                     WHERE typ.url = ?;");
+        $stmt->bind_param("s", $url);
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+
+    public function getComponentsUrlLimit($url, $limit, $offset) {
+
+        $stmt = $this->conn->prepare("SELECT * FROM mt_komponent as komp INNER JOIN mt_typkomponent AS typ ON typ.idKomponent = komp.typKomponent_id INNER JOIN mt_vyrobce AS vyrb 
+                    ON vyrb.idVyrobce = komp.vyrobce_id  
+                    WHERE typ.url = ?
+                    ORDER BY komp.id ASC                    
+                    LIMIT $limit OFFSET $offset
+                    ;");
         $stmt->bind_param("s", $url);
         $stmt->execute();
 

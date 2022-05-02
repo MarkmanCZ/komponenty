@@ -18,7 +18,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-12 col-md-5 p-2">
-                                <img src="<?= getPicture($row['pic']) ?>" class="card-img-top w-100">
+                                <img src="<?= getPicture($row['pic']) ?>" class="img-fluid text-center">
                             </div>
                             <div class="col-12 col-md-7">
                                 <h2><?= $row['nazev']; ?></h2>
