@@ -19,10 +19,21 @@ class Database
         $this->conn->close();
     }
 
+    public function getBrands($type) {
+        $stmt = $this->conn->prepare("SELECT * FROM mt_vyrobce AS vyr 
+        INNER JOIN mt_komponent AS komp ON komp.vyrobce_id = vyr.idVyrobce
+        INNER JOIN mt_typkomponent AS typ ON komp.typKomponent_id = typ.idKomponent
+        WHERE typ.url = ?;");
+        $stmt->bind_param("s", $type);
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+
     public function getComponents() {
         try {
             return $this->conn->query("SELECT * FROM mt_typkomponent");
-        }catch (SQLiteException $ex) {
+        }catch (Exception $ex) {
             $ex->getMessage();
         }
         return null;

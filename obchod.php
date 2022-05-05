@@ -6,7 +6,6 @@
     include 'functions.php';
 
     $db = new Database();
-
     $result = $db->getComponents();
 
 ?>
@@ -16,76 +15,72 @@
         <div class="row">
             <div class="col-md-3 bg-secondary text-light p-2">
                 <h4 class="p-1 border-bottom border-2">Nabídka komponent</h4>
-                    <div class="list-group">
-                        <?php
-                            while($row = $result->fetch_assoc()) {
-                        ?>
-                        <a href="<?= linkComponent($row['url']) ?>" class="list-group-item list-group-item-action <?= ($_GET['komp'] == $row['url']) ? active : false ?>"><?= $row["typKomponent"]; ?></a>
-                        <?php
-                            }
-                        ?>
-                    </div>
+                <div class="list-group">
+                    <?php
+                        while($row = $result->fetch_assoc()) {
+                    ?>
+                    <a href="<?= linkComponent($row['url']) ?>" class="list-group-item list-group-item-action <?= ($_GET['komp'] == $row['url']) ? active : false ?>"><?= $row["typKomponent"]; ?></a>
+                    <?php
+                        }
+                    ?>
+                </div>
             </div>
             <div class="col-md-9 bg-light">
                 <h2 class="text-center m-5"><?php
 
-                    if(!empty($_GET['komp'])) {
+                    if(!empty($_GET['komp']) && $_GET['komp'] != 'all') {
                         echo $db->getComponentType((!empty($_GET['komp'])) ? $_GET['komp'] : false)->fetch_array()['typKomponent'];
                     }
 
-                    ?></h2>
+                    ?>
+                </h2>
 
-                <?php
-
-                ?>
-
-                <form action="" method="POST">
-                    <label for="brands">Vyber vyrobce</label>
-                    <select name="brands" id="brands">
+                <form action="">
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>Filtrace podle značky</option>
                         <?php
+                            $brands = $db->getBrands($_GET['komp']);
 
+                            if($brands != null):
+                            while($brand = $brands->fetch_assoc()) {
                         ?>
-                            <option value=""></option>
+                            <option value=""><?= $brand['vyrobce']?></option>
                         <?php
-                           
+                            }
+                            endif;
                         ?>
                     </select>
                 </form>
 
-
                 <ul class="d-flex flex-wrap justify-content-center list-unstyled mt-3">
                 <?php
-                    if(!empty($_GET['komp'])):
+                    if(!empty($_GET['komp'])){
                         $result2 = $db->getComponentsUrl((!empty($_GET['komp'])) ? $_GET['komp'] : false);
 
                         $per_page = 6;
                         $curr_page = (!empty($_GET['page'])) ? $_GET['page'] : 1;
 
                         $num_of_pages = ceil($result2->num_rows / $per_page);
-
                         $offset = ($curr_page - 1) * $per_page;
-
                         $products = $db->getComponentsUrlLimit((!empty($_GET['komp'])) ? $_GET['komp'] : false, $per_page, $offset);
 
                         while($row2 = $products->fetch_assoc()) {
                 ?>
-                    <li class="m-1">
-                        <div class="card card-shop h-100">
-                            <div class="card-img-top">
-                                <img src="<?= getPicture($row2['pic']) ?>" class="img-fluid p-2">
+                        <li class="m-1">
+                            <div class="card card-shop h-100">
+                                <div class="card-img-top">
+                                    <img src="<?= getPicture($row2['pic']) ?>" class="img-fluid p-2">
+                                </div>
+                                <div class="p-2 align-items-end mt-auto">
+                                    <h5 class="card-title"><?= $row2['nazev'];?></h5>
+                                    <p><?= $row2['vyrobce'];?></p>
+                                    <a href="komponent.php?id=<?= $row2['id']; ?>" class="btn btn-primary">Detail</a>
+                                </div>
                             </div>
-                            <div class="p-2 align-items-end mt-auto">
-                                <h5 class="card-title"><?= $row2['nazev'];?></h5>
-                                <p><?= $row2['vyrobce'];?></p>
-                                <a href="komponent.php?id=<?= $row2['id']; ?>" class="btn btn-primary">Detail</a>
-                            </div>
-                        </div>
-                    </li>
+                        </li>
                     <?php
                         }
-
-
-                        endif;
+                    }
                     ?>
                 </ul>
                 <div class="text-center p-2">
