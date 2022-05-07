@@ -14,20 +14,18 @@ class Database
         }
     }
 
-    public function __destruct()
-    {
+    public function __destruct() {
         $this->conn->close();
     }
 
-    public function getBrands($type) {
-        $stmt = $this->conn->prepare("SELECT * FROM mt_vyrobce AS vyr 
-        INNER JOIN mt_komponent AS komp ON komp.vyrobce_id = vyr.idVyrobce
-        INNER JOIN mt_typkomponent AS typ ON komp.typKomponent_id = typ.idKomponent
-        WHERE typ.url = ?;");
-        $stmt->bind_param("s", $type);
-        $stmt->execute();
+    public function getAllBrands() {
+        try {
+            return $this->conn->query("SELECT * FROM mt_vyrobce");
 
-        return $stmt->get_result();
+        }catch (Exception $ex) {
+            $ex->getMessage();
+        }
+        return null;
     }
 
     public function getComponents() {
@@ -39,6 +37,7 @@ class Database
         return null;
     }
 
+    /*opravit tuto funkci a predelat aby to bylo seperatne na strance*/
     public function getComponentType($url) {
         if($url == false)
             return null;
@@ -99,4 +98,27 @@ class Database
         return $stmt->get_result();
     }
 
+    public function getComponentsBrand($brand) {
+        $stmt = $this->conn->prepare("SELECT * FROM mt_komponent as komp INNER JOIN mt_typkomponent AS typ ON typ.idKomponent = komp.typKomponent_id INNER JOIN mt_vyrobce AS vyrb 
+                    ON vyrb.idVyrobce = komp.vyrobce_id  
+                    WHERE vyrb.vyrobce = ?;");
+        $stmt->bind_param("s", $brand);
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+
+    public function getComponentsUrlLimitBrand($url, $limit, $offset) {
+
+        $stmt = $this->conn->prepare("SELECT * FROM mt_komponent as komp INNER JOIN mt_typkomponent AS typ ON typ.idKomponent = komp.typKomponent_id INNER JOIN mt_vyrobce AS vyrb 
+                    ON vyrb.idVyrobce = komp.vyrobce_id  
+                    WHERE vyrb.vyrobce = ?
+                    ORDER BY komp.id ASC                    
+                    LIMIT $limit OFFSET $offset
+                    ;");
+        $stmt->bind_param("s", $url);
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
 }

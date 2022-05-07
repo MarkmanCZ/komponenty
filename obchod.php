@@ -23,6 +23,7 @@
                     <?php
                         }
                     ?>
+                    <a href="znacky.php" class="list-group-item list-group-item-action <?= ($_GET['komp'] == $row['url']) ? active : false ?>">Podle značky</a>
                 </div>
             </div>
             <div class="col-md-9 bg-light">
@@ -35,22 +36,6 @@
                     ?>
                 </h2>
 
-                <form action="">
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Filtrace podle značky</option>
-                        <?php
-                            $brands = $db->getBrands($_GET['komp']);
-
-                            if($brands != null):
-                            while($brand = $brands->fetch_assoc()) {
-                        ?>
-                            <option value=""><?= $brand['vyrobce']?></option>
-                        <?php
-                            }
-                            endif;
-                        ?>
-                    </select>
-                </form>
 
                 <ul class="d-flex flex-wrap justify-content-center list-unstyled mt-3">
                 <?php
@@ -59,6 +44,7 @@
 
                         $per_page = 6;
                         $curr_page = (!empty($_GET['page'])) ? $_GET['page'] : 1;
+                        if(is_numeric($curr_page)):
 
                         $num_of_pages = ceil($result2->num_rows / $per_page);
                         $offset = ($curr_page - 1) * $per_page;
@@ -80,6 +66,7 @@
                         </li>
                     <?php
                         }
+                        endif;
                     }
                     ?>
                 </ul>
