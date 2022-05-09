@@ -19,11 +19,11 @@
                     <?php
                         while($row = $result->fetch_assoc()) {
                     ?>
-                    <a href="<?= linkComponent($row['url']) ?>" class="list-group-item list-group-item-action <?= ($_GET['komp'] == $row['url']) ? active : false ?>"><?= $row["typKomponent"]; ?></a>
+                    <a href="<?= linkComponent($row['url']) ?>" class="list-group-item list-group-item-action <?= (isset($_GET['komp'])) ? ($_GET['komp'] == $row['url']) ? "active" : false : false ?>"><?= $row["typKomponent"]; ?></a>
                     <?php
                         }
                     ?>
-                    <a href="znacky.php" class="list-group-item list-group-item-action <?= ($_GET['komp'] == $row['url']) ? active : false ?>">Podle značky</a>
+                    <a href="znacky.php" class="list-group-item list-group-item-action">Podle značky</a>
                 </div>
             </div>
             <div class="col-md-9 bg-light">
@@ -51,7 +51,7 @@
                         $products = $db->getComponentsUrlLimit((!empty($_GET['komp'])) ? $_GET['komp'] : false, $per_page, $offset);
 
                         while($row2 = $products->fetch_assoc()) {
-                ?>
+                 ?>
                         <li class="m-1">
                             <div class="card card-shop h-100">
                                 <div class="card-img-top">
