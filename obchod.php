@@ -19,18 +19,18 @@
                     <?php
                         while($row = $result->fetch_assoc()) {
                     ?>
-                    <a href="<?= linkComponent($row['url']) ?>" class="list-group-item list-group-item-action <?= ($_GET['komp'] == $row['url']) ? active : false ?>"><?= $row["typKomponent"]; ?></a>
+                    <a href="<?= linkComponent($row['url']) ?>" class="list-group-item list-group-item-action <?= (isset($_GET['komp'])) ? ($_GET['komp'] == $row['url']) ? "active" : false : false ?>"><?= $row["typKomponent"]; ?></a>
                     <?php
                         }
                     ?>
-                    <a href="znacky.php" class="list-group-item list-group-item-action <?= ($_GET['komp'] == $row['url']) ? active : false ?>">Podle značky</a>
+                    <a href="znacky.php" class="list-group-item list-group-item-action">Podle značky</a>
                 </div>
             </div>
             <div class="col-md-9 bg-light">
                 <h2 class="text-center m-5"><?php
 
                     if(!empty($_GET['komp']) && $_GET['komp'] != 'all') {
-                        echo $db->getComponentType((!empty($_GET['komp'])) ? $_GET['komp'] : false)->fetch_array()['typKomponent'];
+                        echo $db->getComponentType(isset($_GET['komp']) ? $_GET['komp'] : false)->fetch_array()['typKomponent'];
                     }
 
                     ?>
@@ -40,18 +40,18 @@
                 <ul class="d-flex flex-wrap justify-content-center list-unstyled mt-3">
                 <?php
                     if(!empty($_GET['komp'])){
-                        $result2 = $db->getComponentsUrl((!empty($_GET['komp'])) ? $_GET['komp'] : false);
+                        $result2 = $db->getComponentsUrl(isset($_GET['komp']) ? $_GET['komp'] : false);
 
                         $per_page = 6;
-                        $curr_page = (!empty($_GET['page'])) ? $_GET['page'] : 1;
+                        $curr_page = (isset($_GET['page'])) ? $_GET['page'] : 1;
                         if(is_numeric($curr_page)):
 
                         $num_of_pages = ceil($result2->num_rows / $per_page);
                         $offset = ($curr_page - 1) * $per_page;
-                        $products = $db->getComponentsUrlLimit((!empty($_GET['komp'])) ? $_GET['komp'] : false, $per_page, $offset);
+                        $products = $db->getComponentsUrlLimit(isset($_GET['komp']) ? $_GET['komp'] : false, $per_page, $offset);
 
                         while($row2 = $products->fetch_assoc()) {
-                ?>
+                 ?>
                         <li class="m-1">
                             <div class="card card-shop h-100">
                                 <div class="card-img-top">
