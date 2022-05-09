@@ -30,7 +30,7 @@
                 <h2 class="text-center m-5"><?php
 
                     if(!empty($_GET['komp']) && $_GET['komp'] != 'all') {
-                        echo $db->getComponentType((!empty($_GET['komp'])) ? $_GET['komp'] : false)->fetch_array()['typKomponent'];
+                        echo $db->getComponentType(isset($_GET['komp']) ? $_GET['komp'] : false)->fetch_array()['typKomponent'];
                     }
 
                     ?>
@@ -40,15 +40,15 @@
                 <ul class="d-flex flex-wrap justify-content-center list-unstyled mt-3">
                 <?php
                     if(!empty($_GET['komp'])){
-                        $result2 = $db->getComponentsUrl((!empty($_GET['komp'])) ? $_GET['komp'] : false);
+                        $result2 = $db->getComponentsUrl(isset($_GET['komp']) ? $_GET['komp'] : false);
 
                         $per_page = 6;
-                        $curr_page = (!empty($_GET['page'])) ? $_GET['page'] : 1;
+                        $curr_page = (isset($_GET['page'])) ? $_GET['page'] : 1;
                         if(is_numeric($curr_page)):
 
                         $num_of_pages = ceil($result2->num_rows / $per_page);
                         $offset = ($curr_page - 1) * $per_page;
-                        $products = $db->getComponentsUrlLimit((!empty($_GET['komp'])) ? $_GET['komp'] : false, $per_page, $offset);
+                        $products = $db->getComponentsUrlLimit(isset($_GET['komp']) ? $_GET['komp'] : false, $per_page, $offset);
 
                         while($row2 = $products->fetch_assoc()) {
                  ?>
