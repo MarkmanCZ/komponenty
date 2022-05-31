@@ -8,14 +8,62 @@ class Database
     protected $conn;
 
     public function __construct() {
-        $this->conn = new mysqli(Config::$host, Config::$user, Config::$pwd, Config::$db);
+        $this->conn = mysqli_connect(Config::$host, Config::$user, Config::$pwd, Config::$db);
         if(!$this->conn) {
             die("Error: " . mysqli_connect_error());
         }
     }
 
     public function __destruct() {
-        $this->conn->close();
+        if($this->conn != null) {
+            $this->conn->close();
+        }
+    }
+
+    public function register($full, $email, $nick, $pwd) {
+        $full = mysqli_real_escape_string($this->conn, $full);
+        $email = mysqli_real_escape_string($this->conn, $email);
+        $nick = mysqli_real_escape_string($this->conn, $nick);
+        $pwd = mysqli_real_escape_string($this->conn, $pwd);
+
+        $pwd_hash = password_hash($pwd, PASSWORD_DEFAULT);
+        $user_group = 1;
+
+        try {
+
+            $stmt = $this->conn->prepare("INSERT INTO mt_users (user_name, user_email, user_nick, user_pwd, user_group, user_password_old) 
+                                                VALUES (?,?,?,?,?,?);");
+            $stmt->bind_param("ssssss", $full, $email, $nick, $pwd_hash, $user_group, $pwd_hash);
+            $stmt->execute();
+            $stmt->close();
+
+        }catch (Exception $ex) {
+            echo $ex->getMessage();
+        }
+    }
+
+    public function checkUser($name, $email, $pwd) {
+        $name = mysqli_real_escape_string($this->conn, $name);
+        $email = mysqli_real_escape_string($this->conn, $email);
+        $pwd = mysqli_real_escape_string($this->conn, $pwd);
+
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM mt_users WHERE user_nick = ? OR user_email = ?;");
+            $stmt->bind_param('ss', $name, $email);
+            if($stmt->execute()) {
+                if($stmt->num_rows > 0) {
+                    $pwd_db =  $stmt->get_result()->fetch_array()['user_pwd'];
+                    if(password_verify($pwd, $pwd_db)) {
+                        return $stmt->get_result()->fetch_array();
+                    }
+                }
+            }
+            $stmt->close();
+            return false;
+        }catch (Exception $ex) {
+            echo $ex->getMessage();
+        }
+        return null;
     }
 
     public function getAllBrands() {

@@ -24,3 +24,17 @@ function getTitle() {
 function linkComponent($type) {
     return "obchod.php?komp=" . $type;
 }
+
+function showError() {
+    $type = $_GET["error"];
+    require_once 'errors.php';
+
+    foreach($errors as $key => $value) {
+        if($type == $key && !empty($type)) {
+            return $value;
+        }
+        else {
+            return "Tato chyba není v registru chyb!";
+        }
+    }
+}

@@ -15,6 +15,9 @@
                 <li class="nav-item">
                     <a href="owebu.php" class="nav-link">o webu</a>
                 </li>
+                <li class="nav-item">
+                    <a href="login.php" class="btn btn-success">administrace</a>
+                </li>
             </ul>
         </div>
     </nav>
