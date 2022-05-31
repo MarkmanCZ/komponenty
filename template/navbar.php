@@ -15,9 +15,21 @@
                 <li class="nav-item">
                     <a href="owebu.php" class="nav-link">o webu</a>
                 </li>
+            <?php
+                if(isset($_SESSION['user_data'])):
+            ?>
+                    <li class="nav-item">
+                        <a href="../includes/logout.inc.php" class="btn btn-success">odhlásit</a>
+                    </li>
+            <?php
+                else:
+            ?>
                 <li class="nav-item">
                     <a href="login.php" class="btn btn-success">administrace</a>
                 </li>
+            <?php
+                endif;
+            ?>
             </ul>
         </div>
     </nav>

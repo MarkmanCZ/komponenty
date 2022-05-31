@@ -1,6 +1,6 @@
 <?php
-    session_start();
     include_once 'config.php';
+    session_start();
 ?>
 <!doctype html>
 <html lang="cs">

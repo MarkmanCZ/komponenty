@@ -29,30 +29,39 @@ class Database
         $user_nick = mysqli_real_escape_string($this->conn, $user->getNickname());
         $user_pwd = mysqli_real_escape_string($this->conn, $user->getPwd());
         $user_group = mysqli_real_escape_string($this->conn, $user->getGroup());
-        $user_password_old = mysqli_real_escape_string($this->conn, $user->getPwdOld());
 
         $pwdHashed = password_hash($user_pwd, PASSWORD_DEFAULT);
-        $pwdHashedOld = password_hash($user_password_old, PASSWORD_DEFAULT);
 
         $stmt = $this->conn->prepare("INSERT INTO mt_users (user_name, user_email, user_nick, user_pwd, user_group, user_password_old)
                                             VALUES (?,?,?,?,?,?)");
-        $stmt->bind_param("ssssss", $user_name, $user_email, $user_nick, $pwdHashed, $user_group, $pwdHashedOld);
+        $stmt->bind_param("ssssss", $user_name, $user_email, $user_nick, $pwdHashed, $user_group, $pwdHashed);
         $stmt->execute();
     }
 
-    public function login(User $user): string
+    public function login(User $user): array
     {
         $user_nick = mysqli_real_escape_string($this->conn, $user->getNickname());
         $user_email = mysqli_real_escape_string($this->conn, $user->getEmail());
+        $user_pwd = mysqli_real_escape_string($this->conn, $user->getPwd());
 
         $stmt = $this->conn->prepare("SELECT * FROM mt_users WHERE user_nick = ? OR user_email = ?");
         $stmt->bind_param("ss", $user_nick, $user_email);
         $stmt->execute();
-        $stmt->get_result();
-        if($stmt->num_rows > 0 ){
-            return "USER FOUND!";
+        $result = $stmt->get_result();
+
+        $pwdDb = $result->fetch_array()['user_pwd'];
+        $stmt->close();
+        if(password_verify($user_pwd, $pwdDb)) {
+            $stmt_data = $this->conn->prepare("SELECT * FROM mt_users WHERE user_nick = ? OR user_email = ?");
+            $stmt_data->bind_param("ss", $user_nick, $user_email);
+            $stmt_data->execute();
+            $result_data = $stmt_data->get_result();
+
+            session_start();
+
+            $_SESSION['user_data'] = $result_data->fetch_assoc();
         }
-        return "PROBLEM!";
+        return array();
     }
 
     public function getAllBrands()

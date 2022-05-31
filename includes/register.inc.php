@@ -13,11 +13,11 @@ if(isset($_POST["submit"])) {
     //check for errors
 
     //register user
-    $user = new User($full, $email, $username, $pwd, 1, "", $pwd);
+    $user = new User($full, $username, $email, $pwd, 1, "", $pwd);
     $db = new Database();
     $db->register($user);
 
-    header("location: ../index.php?error=none");
+    header("location: ../index.php?register=success");
 }else {
     header("location: ../index.php");
 }

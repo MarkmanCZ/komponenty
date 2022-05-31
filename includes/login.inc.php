@@ -12,5 +12,9 @@ if(isset($_POST["submit"])) {
     //login user
     $user = new User("", $login, $login, $pwd, 0, "", "");
     $db = new Database();
-    echo $db->login($user);
+
+
+    $db->login($user);
+
+    header("location: ../index.php");
 }
