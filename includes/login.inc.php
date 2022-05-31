@@ -1,12 +1,16 @@
 <?php
 
 if(isset($_POST["submit"])) {
-    require_once '../classes/class.login.php';
 
     $login = $_POST['login'];
     $pwd = $_POST['pwd'];
 
-    $login = new Login($login, $pwd);
-    print_r($login->loginUser());
-    //$_SESSION["user"] = $login->loginUser();
+    require_once 'functions.inc.php';
+    require_once '../classes/class.User.php';
+    //check for errors
+
+    //login user
+    $user = new User("", $login, $login, $pwd, 0, "", "");
+    $db = new Database();
+    echo $db->login($user);
 }
