@@ -12,9 +12,11 @@ if(isset($_POST["submit"])) {
     //login user
     $user = new User("", $login, $login, $pwd, 0, "", "");
     $db = new Database();
-
-
-    $db->login($user);
-
-    header("location: ../index.php");
+    $result = $db->login($user);
+    if($result) {
+        header("location: ../index.php?userstate=loggeding");
+    }
+    else if($result === false) {
+        header("location: ../login.php?error=wronglogin");
+    }
 }

@@ -29,12 +29,8 @@ function showError() {
     $type = $_GET["error"];
     require_once 'errors.php';
 
-    foreach($errors as $key => $value) {
-        if($type == $key && !empty($type)) {
-            return $value;
-        }
-        else {
-            return "Tato chyba není v registru chyb!";
-        }
+    if(array_key_exists($type, $errors)) {
+        return $errors[$type];
     }
+    return "Tato chyba není v registru chyb!";
 }

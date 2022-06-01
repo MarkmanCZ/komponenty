@@ -38,7 +38,7 @@ class Database
         $stmt->execute();
     }
 
-    public function login(User $user): array
+    public function login(User $user): bool
     {
         $user_nick = mysqli_real_escape_string($this->conn, $user->getNickname());
         $user_email = mysqli_real_escape_string($this->conn, $user->getEmail());
@@ -51,6 +51,7 @@ class Database
 
         $pwdDb = $result->fetch_array()['user_pwd'];
         $stmt->close();
+
         if(password_verify($user_pwd, $pwdDb)) {
             $stmt_data = $this->conn->prepare("SELECT * FROM mt_users WHERE user_nick = ? OR user_email = ?");
             $stmt_data->bind_param("ss", $user_nick, $user_email);
@@ -60,8 +61,9 @@ class Database
             session_start();
 
             $_SESSION['user_data'] = $result_data->fetch_assoc();
+            return true;
         }
-        return array();
+        return false;
     }
 
     public function getAllBrands()
