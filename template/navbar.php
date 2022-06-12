@@ -17,11 +17,28 @@
                 </li>
             <?php
                 if(isset($_SESSION['user_data'])):
+                    if($_SESSION['user_data']->getGroup() == 10):
             ?>
-                    <li class="nav-item">
-                        <a href="../includes/logout.inc.php" class="btn btn-success">odhlásit</a>
-                    </li>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                        Administrace
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropMenu">
+                        <li><a class="dropdown-item" href="uzivatele.php">Uživatelé</a></li>
+                        <li><a class="dropdown-item" href="komponenty.php">Komponenty</a></li>
+                    </ul>
+                </div>
+                <li class="nav-item ms-2">
+                    <a href="../includes/logout.inc.php" class="btn btn-success">odhlásit</a>
+                </li>
             <?php
+                    else:
+            ?>
+                <li class="nav-item">
+                    <a href="../includes/logout.inc.php" class="btn btn-success">odhlásit</a>
+                </li>
+            <?php
+                endif;
                 else:
             ?>
                 <li class="nav-item">

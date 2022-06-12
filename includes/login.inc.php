@@ -7,6 +7,7 @@ if(isset($_POST["submit"])) {
 
     require_once 'functions.inc.php';
     require_once '../classes/class.User.php';
+    require_once '../classes/class.database.php';
     //check for errors
 
     //login user

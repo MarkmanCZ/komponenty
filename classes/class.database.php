@@ -64,7 +64,6 @@ class Database
 
             $user = new User($data['user_name'], $data['user_nick'], $data['user_email'], $data['user_pwd'], $data['user_group'], $data['user_registred_at'], $data['user_password_old']);
 
-
             $_SESSION['user_data'] = $user;
             return true;
         }
