@@ -1,6 +1,9 @@
 <?php
+    include './classes/class.User.php';
     include_once 'config.php';
     session_start();
+
+    if(isset($_SESSION['user_data']) ? $user = $_SESSION['user_data'] : null);
 ?>
 <!doctype html>
 <html lang="cs">

@@ -1,6 +1,7 @@
 <?php
 
 require_once 'class.config.php';
+require_once 'class.User.php';
 
 
 class Database
@@ -59,8 +60,12 @@ class Database
             $result_data = $stmt_data->get_result();
 
             session_start();
+            $data = $result_data->fetch_assoc();
 
-            $_SESSION['user_data'] = $result_data->fetch_assoc();
+            $user = new User($data['user_name'], $data['user_nick'], $data['user_email'], $data['user_pwd'], $data['user_group'], $data['user_registred_at'], $data['user_password_old']);
+
+
+            $_SESSION['user_data'] = $user;
             return true;
         }
         return false;

@@ -1,7 +1,5 @@
 <?php
 
-include 'class.database.php';
-
 class User
 {
     private string $full_name;
