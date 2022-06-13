@@ -11,7 +11,7 @@ if(isset($_POST["submit"])) {
     //check for errors
 
     //login user
-    $user = new User("", $login, $login, $pwd, 0, "", "");
+    $user = new User(0,"", $login, $login, $pwd, 0, "", "");
     $db = new Database();
     $result = $db->login($user);
     if($result) {

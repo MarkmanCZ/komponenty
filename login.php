@@ -1,5 +1,5 @@
 <?php include 'template/header.php'?>
-
+<main>
 <div class="container">
     <div class="row">
         <div class="col-12 bg-light">
@@ -31,5 +31,6 @@
         </div>
     </div>
 </div>
+</main>
 
 <?php include 'template/footer.php'?>

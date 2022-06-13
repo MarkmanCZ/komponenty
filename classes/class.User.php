@@ -2,6 +2,7 @@
 
 class User
 {
+    private int $id;
     private string $full_name;
     private string $nickname;
     private string $email;
@@ -19,8 +20,9 @@ class User
      * @param string|null $registered_at
      * @param string|null $pwd_old
      */
-    public function __construct(?string $full_name, string $nickname, string $email, string $pwd, ?string $group, ?string $registered_at, ?string $pwd_old)
+    public function __construct(?int $id, ?string $full_name, string $nickname, string $email, string $pwd, ?string $group, ?string $registered_at, ?string $pwd_old)
     {
+        $this->id = $id;
         $this->full_name = $full_name;
         $this->nickname = $nickname;
         $this->email = $email;
@@ -111,9 +113,9 @@ class User
     }
 
     /**
-     * @return Date
+     * @return string
      */
-    public function getRegisteredAt(): Date
+    public function getRegisteredAt(): string
     {
         return $this->registered_at;
     }
@@ -121,7 +123,7 @@ class User
     /**
      * @param Date $registered_at
      */
-    public function setRegisteredAt(Date $registered_at): void
+    public function setRegisteredAt(string $registered_at): void
     {
         $this->registered_at = $registered_at;
     }
@@ -141,5 +143,22 @@ class User
     {
         $this->pwd_old = $pwd_old;
     }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
 
 }

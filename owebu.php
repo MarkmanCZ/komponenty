@@ -1,7 +1,10 @@
     <?php include 'template/header.php';?>
 
-    <div class="container">
+    <main>
+        <div class="container">
 
-    </div>
+        </div>
+    </main>
+
 
     <?php include 'template/footer.php';?>

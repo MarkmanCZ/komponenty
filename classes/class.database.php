@@ -11,16 +11,31 @@ class Database
     public function __construct()
     {
         $this->conn = mysqli_connect(Config::$host, Config::$user, Config::$pwd, Config::$db);
-        if(!$this->conn) {
+        if (!$this->conn) {
             die("Error: " . mysqli_connect_error());
         }
     }
 
     public function __destruct()
     {
-        if($this->conn != null) {
+        if ($this->conn != null) {
             $this->conn->close();
         }
+    }
+
+    public function update(User $user)
+    {
+        $user_name = mysqli_real_escape_string($this->conn, $user->getFullName());
+        $user_email = mysqli_real_escape_string($this->conn, $user->getEmail());
+        $user_nick = mysqli_real_escape_string($this->conn, $user->getNickname());
+        $id = $user->getId();
+        if($user->getPwd() != null){
+            $pwdHashed = password_hash($user->getPwd(), PASSWORD_DEFAULT);
+        }
+
+        $stmt = $this->conn->prepare("UPDATE mt_users SET  user_name = ?, user_email = ?, user_nick = ?, user_pwd = ? WHERE user_id = ?;");
+        $stmt->bind_param("ssssi", $user_name, $user_email, $user_nick, $pwdHashed, $id);
+        $stmt->execute();
     }
 
     public function register(User $user)
@@ -62,12 +77,17 @@ class Database
             session_start();
             $data = $result_data->fetch_assoc();
 
-            $user = new User($data['user_name'], $data['user_nick'], $data['user_email'], $data['user_pwd'], $data['user_group'], $data['user_registred_at'], $data['user_password_old']);
+            $user = new User(intval($data['user_id']),$data['user_name'], $data['user_nick'], $data['user_email'], $data['user_pwd'], $data['user_group'], $data['user_registred_at'], $data['user_password_old']);
 
             $_SESSION['user_data'] = $user;
             return true;
         }
         return false;
+    }
+
+    public function getAllUsers()
+    {
+        return $this->conn->query("SELECT * FROM mt_users");
     }
 
     public function getAllBrands()

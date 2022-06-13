@@ -14,7 +14,7 @@ if(isset($_POST["submit"])) {
     //check for errors
 
     //register user
-    $user = new User($full, $username, $email, $pwd, 1, "", $pwd);
+    $user = new User(0, $full, $username, $email, $pwd, 1, "", $pwd);
     $db = new Database();
     $db->register($user);
 
