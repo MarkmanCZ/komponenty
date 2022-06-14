@@ -6,7 +6,7 @@ include 'classes/class.database.php';
 include 'functions.php';
 
 $db = new Database();
-$result = $db->getComponents();
+$result = $db->getComponentsFromType();
 ?>
     <main>
 

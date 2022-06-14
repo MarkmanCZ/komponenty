@@ -23,6 +23,34 @@ class Database
         }
     }
 
+    public function delete($id)
+    {
+        $stmt = $this->conn->prepare("DELETE FROM mt_users WHERE user_id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    public function deleteComponent($id)
+    {
+        $num = 1;
+        $stmt = $this->conn->prepare("UPDATE mt_komponent SET `delete` = ? WHERE `id` = ?");
+        $stmt->bind_param("ii", $num, $id);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    public function deleteBrand($id)
+    {
+        $num = 1;
+        $stmt = $this->conn->prepare("UPDATE mt_vyrobce SET `delete` = ? WHERE `idVyrobce` = ?");
+        $stmt->bind_param("ii", $num, $id);
+        $stmt->execute();
+        $stmt->close();
+        header("location: ../index.php");
+        exit();
+    }
+
     public function update(User $user)
     {
         $user_name = mysqli_real_escape_string($this->conn, $user->getFullName());
@@ -36,6 +64,7 @@ class Database
         $stmt = $this->conn->prepare("UPDATE mt_users SET  user_name = ?, user_email = ?, user_nick = ?, user_pwd = ? WHERE user_id = ?;");
         $stmt->bind_param("ssssi", $user_name, $user_email, $user_nick, $pwdHashed, $id);
         $stmt->execute();
+        $stmt->close();
     }
 
     public function register(User $user)
@@ -52,6 +81,7 @@ class Database
                                             VALUES (?,?,?,?,?,?)");
         $stmt->bind_param("ssssss", $user_name, $user_email, $user_nick, $pwdHashed, $user_group, $pwdHashed);
         $stmt->execute();
+        $stmt->close();
     }
 
     public function login(User $user): bool
@@ -80,6 +110,7 @@ class Database
             $user = new User(intval($data['user_id']),$data['user_name'], $data['user_nick'], $data['user_email'], $data['user_pwd'], $data['user_group'], $data['user_registred_at'], $data['user_password_old']);
 
             $_SESSION['user_data'] = $user;
+            $stmt_data->close();
             return true;
         }
         return false;
@@ -96,6 +127,17 @@ class Database
     }
 
     public function getComponents()
+    {
+        $num = 0;
+        $stmt =  $this->conn->prepare("SELECT * FROM mt_komponent as komp
+        INNER JOIN mt_typkomponent as typ ON  komp.typKomponent_id = typ.idKomponent
+        INNER JOIN mt_vyrobce as vyrb ON  komp.vyrobce_id = vyrb.idVyrobce
+        ORDER BY komp.id");
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
+    public function getComponentsFromType()
     {
         return $this->conn->query("SELECT * FROM mt_typkomponent");
     }
@@ -152,14 +194,15 @@ class Database
 
     public function getComponentsUrlLimit($url, $limit, $offset)
     {
+        $num = 0;
 
         $stmt = $this->conn->prepare("SELECT * FROM mt_komponent as komp INNER JOIN mt_typkomponent AS typ ON typ.idKomponent = komp.typKomponent_id INNER JOIN mt_vyrobce AS vyrb 
                     ON vyrb.idVyrobce = komp.vyrobce_id  
-                    WHERE typ.url = ?
+                    WHERE typ.url = ? AND komp.delete = ?
                     ORDER BY komp.id ASC                    
                     LIMIT $limit OFFSET $offset
                     ;");
-        $stmt->bind_param("s", $url);
+        $stmt->bind_param("si", $url, $num);
         $stmt->execute();
 
         return $stmt->get_result();

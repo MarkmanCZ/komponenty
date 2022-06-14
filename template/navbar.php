@@ -29,6 +29,7 @@
                     <ul class="dropdown-menu" aria-labelledby="dropMenu">
                         <li><a class="dropdown-item" href="../uzivatele.php">Uživatelé</a></li>
                         <li><a class="dropdown-item" href="../komponenty.php">Komponenty</a></li>
+                        <li><a class="dropdown-item" href="../vyrobce.php">Výrobce</a></li>
                     </ul>
                 </div>
                 <li class="nav-item ms-2">

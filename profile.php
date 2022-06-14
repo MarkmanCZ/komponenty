@@ -50,11 +50,17 @@
             header("location: profile.php?error=pwdempty");
             exit();
         }
-
-        $user = new User($_SESSION['user_data']->getId(), $_POST['full_name'], $_POST['username'], $_POST['email'], $_POST['pwd'], $_SESSION['user_data']->getGroup(),  $_SESSION['user_data']->getRegisteredAt(), $_SESSION['user_data']->getPwdOld());
-        $db = new Database();
-        $db->update($user);
-        $_SESSION['user_data'] = $user;
+        else if(verPwd($_POST['pwd'])) {
+            header("location: profile.php?error=pwdtext");
+            exit();
+        }else {
+            $user = new User($_SESSION['user_data']->getId(), $_POST['full_name'], $_POST['username'], $_POST['email'], $_POST['pwd'], $_SESSION['user_data']->getGroup(), $_SESSION['user_data']->getRegisteredAt(), $_SESSION['user_data']->getPwdOld());
+            $db = new Database();
+            $db->update($user);
+            $_SESSION['user_data'] = $user;
+            header("location: index.php");
+            exit();
+        }
     }
 ?>
 <?php include 'template/footer.php'?>

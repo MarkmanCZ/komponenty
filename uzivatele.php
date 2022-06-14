@@ -8,6 +8,17 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
+                    <?php
+                        if(isset($_GET['page'])) {
+                            switch ($_GET['page']) {
+                                case "delete":
+                                    //smaz uzivatele
+                                    $db->delete($_GET['uid']);
+                                case "edit":
+                                    //edituj uzivatele
+                            }
+                        }else {
+                    ?>
                     <table class="table">
                         <thead>
                             <tr>
@@ -40,8 +51,10 @@
                         ?>
                         </tbody>
                     </table>
+                            <?php } ?>
                 </div>
             </div>
         </div>
     </main>
+
 <?php include 'template/footer.php'?>
