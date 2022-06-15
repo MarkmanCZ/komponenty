@@ -49,6 +49,17 @@ class Database
         $stmt->close();
     }
 
+    public function editBrand($id, $name, $delete)
+    {
+        $esc_id = mysqli_real_escape_string($this->conn, $id);
+        $esc_name = mysqli_real_escape_string($this->conn, $name);
+        $esc_delete = mysqli_real_escape_string($this->conn, $delete);
+
+        $stmt = $this->conn->prepare("UPDATE mt_vyrobce SET `vyrobce` = ?,`delete` = ? WHERE `idVyrobce` = ? ;");
+        $stmt->bind_param("ssi", $esc_name, $esc_delete, $esc_id);
+        $stmt->execute();
+    }
+
     public function update(User $user)
     {
         $user_name = mysqli_real_escape_string($this->conn, $user->getFullName());
@@ -124,6 +135,13 @@ class Database
         return $this->conn->query("SELECT * FROM mt_vyrobce");
     }
 
+    public function getBrandsMinus($id) {
+        $stmt = $this->conn->prepare("SELECT * FROM mt_vyrobce WHERE `idVyrobce` != ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
     public function getBrandsId($id) {
         $stmt = $this->conn->prepare("SELECT * FROM mt_vyrobce WHERE idVyrobce = ?");
         $stmt->bind_param("i", $id);
@@ -144,15 +162,36 @@ class Database
         return $stmt->get_result();
     }
 
+    public function getComponentId($id)
+    {
+        $num = 0;
+        $stmt =  $this->conn->prepare("SELECT  komp.id,komp.nazev,komp.vyrobce_id,komp.typKomponent_id,komp.delete,komp.pic,typ.idKomponent,typ.typKomponent,typ.url,
+        vyrb.idVyrobce, vyrb.vyrobce
+        FROM mt_komponent as komp
+        INNER JOIN mt_typkomponent as typ ON  komp.typKomponent_id = typ.idKomponent
+        INNER JOIN mt_vyrobce as vyrb ON  komp.vyrobce_id = vyrb.idVyrobce
+        WHERE komp.id = ?
+        ORDER BY komp.id;");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
     public function getComponentsFromType()
     {
         return $this->conn->query("SELECT * FROM mt_typkomponent");
     }
+    public function getComponentsFromTypeMinu($comp)
+    {
+       $stmt = $this->conn->prepare("SELECT * FROM mt_typkomponent WHERE `typKomponent` != ?");
+       $stmt->bind_param("s", $comp);
+       $stmt->execute();
+       return $stmt->get_result();
+    }
 
-    /*opravit tuto funkci a predelat aby to bylo seperatne na strance*/
     public function getComponentType($url)
     {
-        if($url == false)
+        if(!$url)
             return null;
         $stmt = $this->conn->prepare("SELECT * FROM mt_typkomponent WHERE url = ?");
         $stmt->bind_param("s", $url);

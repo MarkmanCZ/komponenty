@@ -37,7 +37,7 @@
                                                 <button type="submit" name="submit" class="btn btn-danger">Smazat</button>  
                                             </form>                                       
                                         </td>
-                                        <td><a  href="" class="btn btn-success">Editovat</a></td>
+                                       <td><a  href="edit.php?type=comp&id='.$row['id'].'" class="btn btn-success">Editovat</a></td>
                                     </tr>
                                 ';
                             }
