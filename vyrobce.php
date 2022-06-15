@@ -1,14 +1,17 @@
 <?php include 'template/header.php';?>
 <?php
-require_once 'includes/functions.inc.php';
-require_once 'classes/class.database.php';
-$db = new Database();
-$results = $db->getAllBrands();
+    require_once 'includes/functions.inc.php';
+    require_once 'classes/class.database.php';
+    $db = new Database();
+    $results = $db->getAllBrands();
 ?>
     <main>
         <div class="container">
             <div class="row">
                 <div class="col-12">
+                    <section>
+                        <a href="create.php">Vytvořit nový</a>
+                    </section>
                     <table class="table">
                         <thead>
                         <tr>
@@ -27,8 +30,13 @@ $results = $db->getAllBrands();
                                         <th scope="row">'.$row["idVyrobce"].'</th>
                                         <td>'.$row["vyrobce"].'</td>
                                         <td  class="text-center">'.$row["delete"].'</td>
-                                        <td><a href="vyrobce.php?delete='.$row["idVyrobce"].'" class="btn btn-danger">Smazat</a></td>
-                                        <td><a  href="" class="btn btn-success">Editovat</a></td>
+                                        <td>                                        
+                                            <form action="includes/delete_brand.inc.php" method="POST">
+                                                <input type="text" hidden value="'.$row["idVyrobce"].'" name="id">
+                                                <button type="submit" name="submit" class="btn btn-danger">Smazat</button>  
+                                            </form> 
+                                        </td>
+                                        <td><a  href="edit.php?type=brand&id='.$row['idVyrobce'].'" class="btn btn-success">Editovat</a></td>
                                     </tr>
                                 ';
                         }

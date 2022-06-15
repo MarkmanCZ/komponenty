@@ -31,7 +31,12 @@
                                         <td>'.$row["vyrobce"].'</td>
                                         <td>'.$row["typKomponent"].'</td>
                                         <td class="text-center">'.$row["delete"].'</td>
-                                        <td><a href="komponenty.php?page=delete&delete='.$row["id"].'" class="btn btn-danger">Smazat</a></td>
+                                        <td>                                        
+                                            <form action="includes/delete_comp.inc.php" method="POST">
+                                                <input type="text" hidden value="'.$row["id"].'" name="id">
+                                                <button type="submit" name="submit" class="btn btn-danger">Smazat</button>  
+                                            </form>                                       
+                                        </td>
                                         <td><a  href="" class="btn btn-success">Editovat</a></td>
                                     </tr>
                                 ';
@@ -43,17 +48,5 @@
             </div>
         </div>
     </main>
-
-<?php
-    if(isset($_GET['page'])) {
-        switch($_GET['page']) {
-            case "delete":
-                $db->deleteComponent($_GET['delete']);
-                break;
-            case "edit":
-                break;
-        }
-    }
-?>
 
 <?php include 'template/footer.php'?>

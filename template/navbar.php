@@ -33,13 +33,13 @@
                     </ul>
                 </div>
                 <li class="nav-item ms-2">
-                    <a href="../includes/logout.inc.php" class="btn btn-success">odhlásit</a>
+                    <a href="../includes/logout.inc.php" class="btn btn-outline-success">odhlásit</a>
                 </li>
             <?php
                     else:
             ?>
                 <li class="nav-item">
-                    <a href="../includes/logout.inc.php" class="btn btn-success">odhlásit</a>
+                    <a href="../includes/logout.inc.php" class="btn btn-outline-success">odhlásit</a>
                 </li>
             <?php
                 endif;

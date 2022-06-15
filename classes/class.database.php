@@ -47,8 +47,6 @@ class Database
         $stmt->bind_param("ii", $num, $id);
         $stmt->execute();
         $stmt->close();
-        header("location: ../index.php");
-        exit();
     }
 
     public function update(User $user)
@@ -126,10 +124,19 @@ class Database
         return $this->conn->query("SELECT * FROM mt_vyrobce");
     }
 
+    public function getBrandsId($id) {
+        $stmt = $this->conn->prepare("SELECT * FROM mt_vyrobce WHERE idVyrobce = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
     public function getComponents()
     {
         $num = 0;
-        $stmt =  $this->conn->prepare("SELECT * FROM mt_komponent as komp
+        $stmt =  $this->conn->prepare("SELECT  komp.id,komp.nazev,komp.vyrobce_id,komp.typKomponent_id,komp.delete,typ.idKomponent,typ.typKomponent,typ.url,
+        vyrb.idVyrobce, vyrb.vyrobce, vyrb.delete as vrdelete
+        FROM mt_komponent as komp
         INNER JOIN mt_typkomponent as typ ON  komp.typKomponent_id = typ.idKomponent
         INNER JOIN mt_vyrobce as vyrb ON  komp.vyrobce_id = vyrb.idVyrobce
         ORDER BY komp.id");
