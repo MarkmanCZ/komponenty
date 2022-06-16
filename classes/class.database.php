@@ -60,6 +60,30 @@ class Database
         $stmt->execute();
     }
 
+    public function editComponent($id, $name, $brand, $delete, $pic, $link, $type)
+    {
+        $esc_id = mysqli_real_escape_string($this->conn, $id);
+        $esc_brand = mysqli_real_escape_string($this->conn, $brand);
+        $esc_name = mysqli_real_escape_string($this->conn, $name);
+        $esc_delete = mysqli_real_escape_string($this->conn, $delete);
+        $esc_pic = mysqli_real_escape_string($this->conn, $pic);
+        $esc_link = mysqli_real_escape_string($this->conn, $link);
+        $esc_type = mysqli_real_escape_string($this->conn, $type);
+
+
+        print_r([$esc_id, $esc_brand, $esc_name, $esc_delete, $esc_pic, $esc_link, $esc_type]);
+
+        //get specified brand
+        $brand_id = $this->getBrandByName($esc_brand)->fetch_array()['idVyrobce'];
+        //get specified type
+        $type_id = $this->getComponentTypeName($esc_type)->fetch_array()['idKomponent'];
+
+        $stmt = $this->conn->prepare("UPDATE mt_komponent SET `nazev` = ?, `vyrobce_id` = ?, `typKomponent_id` = ?, `pic` = ?, `delete` = ?, `odkaz` = ? WHERE `id` = ?;");
+        $stmt->bind_param("siisisi", $esc_name, $brand_id, $type_id, $esc_pic, $esc_delete, $esc_link, $esc_id);
+        $stmt->execute();
+
+    }
+
     public function update(User $user)
     {
         $user_name = mysqli_real_escape_string($this->conn, $user->getFullName());
@@ -165,7 +189,7 @@ class Database
     public function getComponentId($id)
     {
         $num = 0;
-        $stmt =  $this->conn->prepare("SELECT  komp.id,komp.nazev,komp.vyrobce_id,komp.typKomponent_id,komp.delete,komp.pic,typ.idKomponent,typ.typKomponent,typ.url,
+        $stmt =  $this->conn->prepare("SELECT  komp.id,komp.nazev,komp.vyrobce_id,komp.typKomponent_id,komp.delete,komp.pic,komp.odkaz,typ.idKomponent,typ.typKomponent,typ.url,
         vyrb.idVyrobce, vyrb.vyrobce
         FROM mt_komponent as komp
         INNER JOIN mt_typkomponent as typ ON  komp.typKomponent_id = typ.idKomponent
@@ -238,6 +262,18 @@ class Database
         return $stmt->get_result();
     }
 
+    public function getBrandByName($brand_name)
+    {
+
+        $stmt = $this->conn->prepare("
+        SELECT * FROM mt_vyrobce WHERE `vyrobce` = ?;");
+
+        $stmt->bind_param("s", $brand_name);
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+
     public function getComponentsUrlLimit($url, $limit, $offset)
     {
         $num = 0;
@@ -275,6 +311,15 @@ class Database
                     LIMIT $limit OFFSET $offset
                     ;");
         $stmt->bind_param("s", $url);
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+
+    public function getComponentTypeName($type_name)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM `mt_typkomponent` WHERE `typKomponent` = ?;");
+        $stmt->bind_param("s", $type_name);
         $stmt->execute();
 
         return $stmt->get_result();

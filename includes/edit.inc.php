@@ -16,9 +16,15 @@ if(isset($_POST['submit'])) {
             header("location: ../vyrobce.php");
         case "comp":
             $id = $_GET['id'];
-            $name = $_POST['type'];
+            $name = $_POST['name'];
+            $type = $_POST['type'];
             $brand = $_POST['brand'];
             $delete = $_POST['delete'];
+            $pic = $_POST['pic'];
+            $link = $_POST['link'];
+
+            $db->editComponent($id, $name, $brand, $delete, $pic, $link, $type);
+            //header("location: ../komponenty.php");
 
     }
 

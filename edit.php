@@ -46,7 +46,8 @@
                                 ?>
                                     <section class="img-thumbnail p-3">
                                         <form action="includes/edit.inc.php?type=<?= $_GET['type'];?>&id=<?= $data['id'];?>" method="POST">
-
+                                            <input type="text"  name="type" id="type" value="<?= $data['typKomponent']; ?>">
+                                            <input type="text"  name="brand" id="brand" value="<?= $data['vyrobce'] ?>">
                                             <div class="p-3">
                                                 <label for="id">ID Komponentu</label>
                                                 <input type="text" class="form-control" name="id" id="id" disabled value="<?= $data['id']; ?>">
@@ -57,8 +58,8 @@
                                             </div>
                                             <div class="p-3">
                                                 <label for="type">Typ komponentu</label>
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected><?= $data['typKomponent']; ?></option>
+                                                <select class="form-select" aria-label="Default select example" id="type_list" onclick="checkInput()">
+                                                    <option selected id="type_def"><?= $data['typKomponent']; ?></option>
                                                     <?php
                                                         $result = $db->getComponentsFromTypeMinu($data['typKomponent']);
                                                         while($row = $result->fetch_assoc()) {
@@ -72,8 +73,8 @@
                                             </div>
                                             <div class="p-3">
                                                 <label for="brand">Výrobce komponentu</label>
-                                                <select class="form-select" aria-label="Default select example">
-                                                    <option selected><?= $data['vyrobce']; ?></option>
+                                                <select class="form-select" aria-label="Default select example" id="brand_list" onclick="checkInput()">
+                                                    <option selected id="brand_def"><?= $data['vyrobce']; ?></option>
                                                     <?php
                                                     $result = $db->getBrandsMinus($data['idVyrobce']);
                                                         while($row = $result->fetch_assoc()) {
@@ -90,13 +91,16 @@
                                                 <input type="text" class="form-control" name="pic" id="pic"  value="<?= $data['pic']; ?>">
                                             </div>
                                             <div class="p-3">
+                                                <label for="link">Odkaz</label>
+                                                <input type="text" class="form-control" name="link" id="link"  value="<?= $data['odkaz']; ?>">
+                                            </div>
+                                            <div class="p-3">
                                                 <label for="delete">Smazaný/Zakázaný</label>
                                                 <input type="text" class="form-control" name="delete" id="delete" value="<?= $data['delete']; ?>">
                                             </div>
                                             <button type="submit" name="submit" class="btn btn-primary px-auto mx-3">Odeslat</button>
                                         </form>
                                     </section>
-
                                 <?php
                             }
                         }
@@ -105,5 +109,21 @@
             </div>
         </div>
     </main>
+
+    <script>
+        function checkInput() {
+            let brand_list = document.getElementById('brand_list');
+            let type_list = document.getElementById('type_list');
+
+            let value_br = brand_list.options[brand_list.selectedIndex].text;
+            let value_tp = type_list.options[type_list.selectedIndex].text;
+
+            let brand = document.getElementById('brand');
+            let type = document.getElementById('type');
+
+            brand.value = value_br;
+            type.value = value_tp;
+        }
+    </script>
 
 <?php include 'template/footer.php';?>

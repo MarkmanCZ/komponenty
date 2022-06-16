@@ -1,5 +1,6 @@
 function getValue(to) {
-    var selected = document.getElementById("list");
-    var value = selected.options[selected.selectedIndex].text;
+    const selected = document.getElementById("list");
+    const value = selected.options[selected.selectedIndex].text;
     window.location.href = "znacky.php?" + to + "=" + value;
 }
+
