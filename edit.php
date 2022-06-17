@@ -46,8 +46,8 @@
                                 ?>
                                     <section class="img-thumbnail p-3">
                                         <form action="includes/edit.inc.php?type=<?= $_GET['type'];?>&id=<?= $data['id'];?>" method="POST">
-                                            <input type="text"  name="type" id="type" value="<?= $data['typKomponent']; ?>">
-                                            <input type="text"  name="brand" id="brand" value="<?= $data['vyrobce'] ?>">
+                                            <input type="text" hidden name="type" id="type" value="<?= $data['typKomponent']; ?>">
+                                            <input type="text" hidden name="brand" id="brand" value="<?= $data['vyrobce'] ?>">
                                             <div class="p-3">
                                                 <label for="id">ID Komponentu</label>
                                                 <input type="text" class="form-control" name="id" id="id" disabled value="<?= $data['id']; ?>">
@@ -112,14 +112,14 @@
 
     <script>
         function checkInput() {
-            let brand_list = document.getElementById('brand_list');
-            let type_list = document.getElementById('type_list');
+            const brand_list = document.getElementById('brand_list');
+            const type_list = document.getElementById('type_list');
 
-            let value_br = brand_list.options[brand_list.selectedIndex].text;
-            let value_tp = type_list.options[type_list.selectedIndex].text;
+            const value_br = brand_list.options[brand_list.selectedIndex].text;
+            const value_tp = type_list.options[type_list.selectedIndex].text;
 
-            let brand = document.getElementById('brand');
-            let type = document.getElementById('type');
+            const brand = document.getElementById('brand');
+            const type = document.getElementById('type');
 
             brand.value = value_br;
             type.value = value_tp;

@@ -1,11 +1,12 @@
 <?php
 
-function checkEmpty($args): bool
+function checkEmpty($args)
 {
-    foreach($args as $value) {
-        if(empty($value)) {
+    for($i = 1; $i <= count($args); $i++) {
+        if(empty($args[$i])) {
             return true;
         }
+        return false;
     }
     return false;
 }
